@@ -2,19 +2,20 @@ package cl.benm.linkresolver.handlers
 
 import android.content.Context
 import android.net.Uri
+import android.os.Handler
+import android.os.Looper
 import androidx.navigation.NavController
 import cl.benm.linkresolver.MatchingLinkHandler
 import java.util.concurrent.Executor
 
 abstract class DeeplinkLinkHandler(
-    private val navController: NavController,
-    private val uiExecutor: Executor
+    private val navController: NavController
 ): MatchingLinkHandler {
 
     override fun handle(link: String, context: Context): Boolean {
         if (!matching(link, context)) return true
 
-        uiExecutor.execute {
+        Handler(Looper.getMainLooper()).post {
             navController.navigate(Uri.parse(link))
         }
 
@@ -24,10 +25,9 @@ abstract class DeeplinkLinkHandler(
 }
 
 class PackageDeeplinkHandler(
-    navController: NavController,
-    uiExecutor: Executor
+    navController: NavController
 ): DeeplinkLinkHandler(
-    navController, uiExecutor
+    navController
 ) {
 
     override fun matching(link: String, context: Context): Boolean {
