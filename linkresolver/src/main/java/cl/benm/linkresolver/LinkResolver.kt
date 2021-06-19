@@ -23,8 +23,8 @@ interface LinkResolver {
         @JvmStatic
         fun createDeeplinked(globalContextStrategy: GlobalContextStrategy, navController: NavController): LinkResolver {
             return DefaultLinkResolver(globalContextStrategy).apply {
-                register(PackageDeeplinkHandler(navController))
-                register(ActivityLinkHandler(), 900)
+                register(PackageDeeplinkHandler(navController), 900)
+                register(ActivityLinkHandler(), 1000)
             }
         }
 
